@@ -22,7 +22,7 @@ export default function Login(){
                   required  
                  />
 
-                 <button type="submit">Entrar</button>
+                 <button type="submit">ENTRAR</button>
                 </StyledForm>
             </form>
             <StyledLink to="/sign-up">
@@ -87,7 +87,7 @@ const StyledForm = styled.label`
     background: #FF4791;
     border-radius: 9px;
     border: 1px #FF4791;
-    margin-top: 14px;
+    margin-top: 10px;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 700;
@@ -100,7 +100,7 @@ const StyledForm = styled.label`
 `
 
 const StyledLink = styled(Link)`
-
+    margin-top: -85px;
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
