@@ -1,9 +1,13 @@
 import styled from "styled-components";
+import Planos from "../components/Planos";
 
 export default function SubScriptions(){
     return(
         <Container>
             <Topoh1>Escolha seu Plano</Topoh1>
+            <Planos/>
+            <Planos/>
+            <Planos/>
         </Container>
     )
 }
