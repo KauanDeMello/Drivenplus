@@ -5,28 +5,27 @@ import Profile from "../assets/Profile.svg"
 export default function HomePlan(){
 
     return(
-        <Container>
-            <TopContainer>
-                <LogoImage src={LogoWhite} alt="Logo Icon"/>
-                <ProfileImage src={Profile} alt ="Profile Icon"/>
-            </TopContainer>
-            <GreetingText>Olá, Fulano!</GreetingText>
-            <form>
-                <ButtonsForm>
-                <button type="submit">Solicitar Brindes</button>
-                <button type="submit">Materiais bônus de web</button>
-                <button type="submit">Materiais bônus de web</button>
-                <button type="submit">Materiais bônus de web</button>
-                </ButtonsForm>
-                <FooterButtons>
-                <ChangeButton>Mudar plano</ChangeButton>
-                <CancelButton>Cancelar plano</CancelButton>
-                </FooterButtons>
-            </form>
         
-               
-            
-        </Container>
+        <Container>
+        <TopContainer>
+            <LogoImage src={LogoWhite} alt="Logo Icon"/>
+            <ProfileImage src={Profile} alt ="Profile Icon"/>
+        </TopContainer>
+        <GreetingText>Olá, Fulano!</GreetingText>
+        
+            <ButtonsForm>
+            <button type="submit">Solicitar Brindes</button>
+            <button type="submit">Materiais bônus de web</button>
+            <button type="submit">Materiais bônus de web</button>
+            <button type="submit">Materiais bônus de web</button>
+            </ButtonsForm>
+            <FooterButtons>
+            <ChangeButton>Mudar plano</ChangeButton>
+            <CancelButton>Cancelar plano</CancelButton>
+            </FooterButtons>
+    </Container>
+    
+       
     )
 
 }
@@ -104,8 +103,8 @@ const ButtonsForm = styled.div`
 `
 
 const FooterButtons = styled.div`
-    
-    margin-top: 275px;
+    position: absolute;
+    bottom: 12px;
     width: 100%;
     display: flex;
     flex-direction: column;

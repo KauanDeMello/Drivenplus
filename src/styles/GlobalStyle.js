@@ -10,6 +10,12 @@ const GlobalStyle = createGlobalStyle`
       
   }
 
+  @media (max-width: 600px) {
+    html {
+      font-size: 50%;
+    }
+  }
+
 `
 
 export default GlobalStyle 
