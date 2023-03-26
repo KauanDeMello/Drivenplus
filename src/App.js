@@ -6,17 +6,17 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import HomePlan from "./pages/HomePlan"
 
 export default function App(){
+    
 
     return(
         <BrowserRouter>
-            <Routes>
+        <Routes>
                 <Route path= "/" element={<Login />}/>
                 <Route path= "/sign-up" element={<Signup />}/>
                 <Route path="/subscriptions" element={<SubScriptions />}/>
                 <Route path="/subscriptions/ID_DO_PLANO" element={<SubScriptionsID />}/>
                 <Route path="/home" element={<HomePlan />}/>
             </Routes>
-
         </BrowserRouter>
     )
 

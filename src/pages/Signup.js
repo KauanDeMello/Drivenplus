@@ -1,38 +1,76 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import apiAuth from "../services/apiAuth";
+import { useState } from "react";
 
 export default function Signup(){
+
+  const [formo, setFormo] = useState({name:"", cpf:"", email: "", password:""})
+  const navigate = useNavigate()
+
+  function handleFormo(e){
+    setFormo({...formo, [e.target.name] : e.target.value})
+  }
+
+  function Handlesignup(e){
+    e.preventDefault()
+  
+    apiAuth.signUp(formo)
+      .then(res => {
+        console.log(res)
+          navigate("/")
+        
+      })
+      .catch(err => {
+        alert(err.response.data.message)
+        console.log(err.response.data)
+      })
+  }
+
+
     return(
         <>
         <Container>
-            <form>
+            <form onSubmit={Handlesignup}>
                 <StyledForm>
 
-                <input 
+                <input
+                  name="name" 
                   type="name"
                   placeholder="Nome"
-                  required  
+                  required
+                  value={formo.name}
+                  onChange={handleFormo}   
                  />
 
-                <input 
+                <input
+                  name="cpf"  
                   type="text"
                   placeholder="CPF"
-                  required  
+                  required
+                  value={formo.cpf}
+                  onChange={handleFormo}   
                  />
 
-                 <input 
+                 <input
+                  name="email"  
                   type="email"
                   placeholder="E-mail"
-                  required  
+                  required
+                  value={formo.email}
+                  onChange={handleFormo}   
                  />
 
-                <input 
+                <input
+                  name="password"   
                   type="password"
                   placeholder="Senha"
-                  required  
+                  required
+                  value={formo.password}
+                  onChange={handleFormo}   
                  />
 
-                 <button type="submit">ENTRAR</button>
+                 <button type="submit">CADASTRAR</button>
                 </StyledForm>
             </form>
             <StyledLink to="/">
