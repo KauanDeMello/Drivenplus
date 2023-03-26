@@ -1,25 +1,59 @@
 import styled from "styled-components";
 import Logo from "../assets/Logo.svg"
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import apiAuth from "../services/apiAuth";
+import { useState } from "react";
 
 export default function Login(){
+  const [formo, setFormo] = useState({email: "", password:""})
+  const navigate = useNavigate()
+
+  function handleFormo(e){
+    setFormo({...formo, [e.target.name] : e.target.value})
+  }
+
+  function handleLogin(e){
+    e.preventDefault()
+  
+    apiAuth.login(formo)
+      .then(res => {
+        if (res.data.plan === null) {
+          navigate("/subscriptions")
+        } else {
+          navigate("/home")
+        }
+      })
+      .catch(err => {
+        alert(err.response.data.message)
+        console.log(err.response.data)
+      })
+  }
+
+
+
     return(
         <>
         <Container>
             <LogoImage src={Logo}/>
-            <form>
+            <form onSubmit={handleLogin}>
                 <StyledForm>
 
                  <input 
+                 name ="email"
                   type="email"
                   placeholder="E-mail"
-                  required  
+                  required 
+                  value={formo.email}
+                  onChange={handleFormo} 
                  />
 
                 <input 
+                name="password"
                   type="password"
                   placeholder="Senha"
-                  required  
+                  required
+                  value={formo.password}
+                  onChange={handleFormo}    
                  />
 
                  <button type="submit">ENTRAR</button>
