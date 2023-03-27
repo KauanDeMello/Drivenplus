@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import apiSubscriptions from "../services/apiSubscriptions"
+import { Link } from "react-router-dom";
 
 
 export default function Plan() {
@@ -23,13 +24,13 @@ export default function Plan() {
     return (
         <div>
         {planList.map(plan => (
-          <Planbox key={plan.id}>
+           <StyledLink key={plan.id} to={`/subscriptions/${plan.id}`}>
+            <Planbox key={plan.id}>
             <LogoImage src={plan.image} />
             <Price>R$ {plan.price}</Price>
-            <div>{plan.id}</div>
-            <div>{plan.description}</div>
-            <div>{plan.benefits}</div>
           </Planbox>
+
+           </StyledLink> 
         ))}
       </div>
     );
@@ -64,3 +65,8 @@ const Price = styled.h2`
     line-height: 28px;
     color: #FFFFFF;
 `
+
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+`;

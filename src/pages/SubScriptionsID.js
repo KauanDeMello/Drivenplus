@@ -1,53 +1,66 @@
 import styled from "styled-components";
-import LogoWhite from "../assets/LogoWhite.svg"
 import Arrow from "../assets/Arrow.svg"
 import DetailsPlan from "../components/DetailsPlan";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import apiSubscriptions from "../services/apiSubscriptions";
 
 
 
-export default function subscriptionsID(){
-    return(
-        <Container>
-             <ArrowImage src={Arrow}></ArrowImage>
-             <LogoImage src={LogoWhite}/>
-             <PlanoText>Driven Plus</PlanoText> 
-             <DetailsPlan/>
-             <form>
-             <StyledForm>
-             <NameCard>
-             <input 
-                  type="name"
-                  placeholder="Nome impresso no cartão"
-                  required  
-                 />
 
+export default function SubscriptionsID() {
+    const { id } = useParams();
+    const [plan, setPlan] = useState(null);
+  
+    useEffect(() => {
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
+      const headers = { Authorization: `Bearer ${token}` };
+  
+      apiSubscriptions.get(`/memberships/${id}`, { headers })
+        .then(response => {
+          setPlan(response.data);
+        })
+        .catch(error => alert(error.response.data.message));
+    }, [id]);
+  
+    return (
+      <Container>
+        <ArrowImage src={Arrow} />
+        <LogoImage src={plan ? plan.image : ""} />
+        <PlanoText>{plan ? plan.name : ""}</PlanoText>
+        <DetailsPlan />
+        <form>
+          <StyledForm>
+            <NameCard>
               <input 
-                  type="text"
-                  placeholder="Digitos do cartão"
-                  required  
-                 />  
-             </NameCard>
-
-             <DataCard>
-             <input 
-                  type="text"
-                  placeholder="Código de segurança"
-                  required  
-                 />
-             <input 
-                  type="text"
-                  placeholder="Validade"
-                  required  
-                 />
+                type="name"
+                placeholder="Nome impresso no cartão"
+                required  
+              />
+              <input 
+                type="text"
+                placeholder="Digitos do cartão"
+                required  
+              />  
+            </NameCard>
+            <DataCard>
+              <input 
+                type="text"
+                placeholder="Código de segurança"
+                required  
+              />
+              <input 
+                type="text"
+                placeholder="Validade"
+                required  
+              />
             </DataCard>   
-
-            </StyledForm> 
-            <Button type="submit">ASSINAR</Button>     
-             </form>
-              
-        </Container>
-    )
-}
+          </StyledForm> 
+          <Button type="submit">ASSINAR</Button>     
+        </form>
+      </Container>
+    );
+  }
 
 const ArrowImage = styled.img`
         margin-right: 290px;
