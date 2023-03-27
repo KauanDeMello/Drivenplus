@@ -1,14 +1,19 @@
 import styled from "styled-components";
 import Profile from "../assets/Profile.svg"
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 
 export default function HomePlan(){
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, token } = useContext(UserContext);
     const navigate = useNavigate();
+    const[id, setId] = useState("");
+    const[cardName, seCardname] = useState("");
+    const[cardNumber, setCardNumber] = useState("");
+    const[securityNumber, setSecurityNumber] = useState("");
+    const[expirationDate, setExpirationDate] = useState("")
     
 
     useEffect(() => {
@@ -18,8 +23,6 @@ export default function HomePlan(){
 
 
     const handleCancelPlan = () => {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
         const headers = { Authorization: `Bearer ${token}` };
     
         axios
@@ -34,8 +37,6 @@ export default function HomePlan(){
       };
     
       const handleChangePlan = () => {
-        const token =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
         const headers = { Authorization: `Bearer ${token}` };
     
         const newPlan = {
@@ -59,13 +60,15 @@ export default function HomePlan(){
           .catch((error) => alert(error.response.data.message));
       };
 
-    return(
+      return(
         <Container>
         <TopContainer>
-            <LogoImage src={user.membership.image} alt="Logo Icon"/>
+            <LogoImage src={(user.membership.image)} alt="Logo Icon"/>
             <ProfileImage src={Profile} alt ="Profile Icon"/>
         </TopContainer>
-        <GreetingText>Olá, {user.name}!</GreetingText>
+        <GreetingText>Olá, {JSON.stringify(user.name)}!</GreetingText>
+
+
         
         <ButtonsForm>
       {user.membership.perks.map((perk, index) => (
@@ -81,6 +84,7 @@ export default function HomePlan(){
         </Container>
     )
 }
+
 
 const Container = styled.div`
     height: 100%;
