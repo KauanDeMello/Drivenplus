@@ -14,15 +14,18 @@ export default function Login(){
 
   function handleLogin(e){
     e.preventDefault()
+
   
     apiAuth.login(formo)
-      .then(res => {
-        if (res.data.plan === null) {
-          navigate("/subscriptions")
-        } else {
-          navigate("/home")
-        }
-      })
+    .then(res => {
+      if (res.data.membership === null) {
+        localStorage.setItem("credentials", JSON.stringify(formo));
+        navigate("/subscriptions")
+      } else {
+        localStorage.setItem("credentials", JSON.stringify(formo));
+        navigate("/home")
+      }
+    })
       .catch(err => {
         alert(err.response.data.message)
         console.lo(err.response.data.message)
