@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Arrow from "../assets/Arrow.svg"
 import DetailsPlan from "../components/DetailsPlan";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import apiSubscriptions from "../services/apiSubscriptions";
 import Modal from "../components/Modal";
 
@@ -42,7 +42,9 @@ export default function SubscriptionsID() {
   
     return (
       <Container>
-        <ArrowImage src={Arrow} />
+       <ArrowLink to="/subscriptions">
+            <ArrowImage src={Arrow} />
+        </ArrowLink>
         <LogoImage src={plan ? plan.image : ""} />
         <PlanoText>{plan ? plan.name : ""}</PlanoText>
         <DetailsPlan plan={plan}/>
@@ -86,14 +88,17 @@ export default function SubscriptionsID() {
     );
   }
 
-const ArrowImage = styled.img`
-        margin-right: 290px;
-        width: 28px;
-        height: 27px;
-        margin-top: 20px;
-        transform: matrix(1, 0, 0, -1, 0, 0);
+  const ArrowLink = styled(Link)`
+  margin-right: 290px;
+  margin-top: 20px;
+  display: inline-block;
+`;
 
-`
+const ArrowImage = styled.img`
+  width: 28px;
+  height: 27px;
+  transform: matrix(1, 0, 0, -1, 0, 0);
+`;
 
 const Container = styled.div`
     height: 100%;
