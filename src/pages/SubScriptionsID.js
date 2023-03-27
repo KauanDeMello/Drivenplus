@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Arrow from "../assets/Arrow.svg"
 import DetailsPlan from "../components/DetailsPlan";
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate, redirect } from "react-router-dom";
 import apiSubscriptions from "../services/apiSubscriptions";
 import Modal from "../components/Modal";
 
@@ -10,9 +10,14 @@ import Modal from "../components/Modal";
 
 
 export default function SubscriptionsID() {
+    const navigate = useNavigate();
     const { id } = useParams();
     const [plan, setPlan] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [cardName, setCardName] = useState("");
+    const [cardNumber, setCardNumber] = useState("");
+    const [securityNumber, setSecurityNumber] = useState("");
+    const [expirationDate, setExpirationDate] = useState("");
   
     useEffect(() => {
       const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
@@ -35,9 +40,46 @@ export default function SubscriptionsID() {
         setShowModal(false);
       };
 
+      const handleSelectPlan = (planId) => {
+        const selectedPlan = plan.find((plan) => plan.id === planId);
+        setPlan(selectedPlan);
+      };
+
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
+
       const handleSubscribe = () => {
-        // Adicione aqui a lógica para fazer a assinatura
-        console.log("Assinando o plano...");
+        const data = {
+          membershipId: plan.id,
+          cardName: cardName,
+          cardNumber: cardNumber,
+          securityNumber: securityNumber,
+          expirationDate: expirationDate,
+        };
+        
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify(data),
+        };
+    
+        fetch("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", options)
+          .then((response) => response.json())
+          .then((data) => {
+            setPlan(data);
+            setShowModal(false);
+            redirectToHome();
+          })
+          .catch((error) => {
+            console.error("Error subscribing to plan:", error);
+            alert("Error subscribing to plan. Please try again later.");
+          });
+          
+          const redirectToHome = () => {
+            navigate("/home");
+          };
       };
   
     return (
@@ -54,24 +96,32 @@ export default function SubscriptionsID() {
               <input 
                 type="name"
                 placeholder="Nome impresso no cartão"
-                required  
+                required
+                value={cardName}
+                onChange={(event) => setCardName(event.target.value)}  
               />
               <input 
                 type="text"
                 placeholder="Digitos do cartão"
-                required  
+                required
+                value={cardNumber}
+                onChange={(event) => setCardNumber(event.target.value)}  
               />  
             </NameCard>
             <DataCard>
               <input 
                 type="text"
                 placeholder="Código de segurança"
-                required  
+                required
+                value={securityNumber}
+                onChange={(event) => setSecurityNumber(event.target.value)}  
               />
               <input 
                 type="text"
                 placeholder="Validade"
-                required  
+                required
+                value={expirationDate}
+                onChange={(event) => setExpirationDate(event.target.value)}  
               />
             </DataCard>   
           </StyledForm> 

@@ -1,33 +1,38 @@
 import styled from "styled-components";
-import LogoWhite from "../assets/LogoWhite.svg"
 import Profile from "../assets/Profile.svg"
+import { useContext, useEffect } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 export default function HomePlan(){
 
+    const { user, setUser } = useContext(UserContext);
+
+    useEffect(() => {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      setUser(userData);
+    }, [setUser]);
+
     return(
-        
         <Container>
         <TopContainer>
-            <LogoImage src={LogoWhite} alt="Logo Icon"/>
+            <LogoImage src={user.membership.image} alt="Logo Icon"/>
             <ProfileImage src={Profile} alt ="Profile Icon"/>
         </TopContainer>
-        <GreetingText>Olá, Fulano!</GreetingText>
+        <GreetingText>Olá, {user.name}!</GreetingText>
         
-            <ButtonsForm>
-            <button type="submit">Solicitar Brindes</button>
-            <button type="submit">Materiais bônus de web</button>
-            <button type="submit">Materiais bônus de web</button>
-            <button type="submit">Materiais bônus de web</button>
-            </ButtonsForm>
+        <ButtonsForm>
+      {user.membership.perks.map((perk, index) => (
+        <a href={perk.link} target="_blank" rel="noopener noreferrer" key={index}>
+          <button type="button">{perk.title}</button>
+        </a>
+      ))}
+    </ButtonsForm>
             <FooterButtons>
             <ChangeButton>Mudar plano</ChangeButton>
             <CancelButton>Cancelar plano</CancelButton>
             </FooterButtons>
-    </Container>
-    
-       
+        </Container>
     )
-
 }
 
 const Container = styled.div`
