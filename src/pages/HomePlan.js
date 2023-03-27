@@ -2,15 +2,63 @@ import styled from "styled-components";
 import Profile from "../assets/Profile.svg"
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
+import axios from "axios";
+import { Link } from "react-router-dom";
+
 
 export default function HomePlan(){
-
     const { user, setUser } = useContext(UserContext);
 
+
     useEffect(() => {
-      const userData = JSON.parse(localStorage.getItem("user"));
-      setUser(userData);
+        const userData = JSON.parse(localStorage.getItem("user"));
+        setUser(userData);
     }, [setUser]);
+
+
+    const handleCancelPlan = () => {
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
+        const headers = { Authorization: `Bearer ${token}` };
+    
+        axios
+          .delete("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", {
+            headers,
+          })
+          .then((response) => {
+            alert("Plano cancelado com sucesso!");
+            return <Link to="/subscriptions" />;
+          })
+          .catch((error) => alert(error.response.data.message));
+      };
+    
+      const handleChangePlan = () => {
+        const token =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
+        const headers = { Authorization: `Bearer ${token}` };
+    
+        const newPlan = {
+          planId: 2, 
+          creditCard: {
+          number: "1234123412341234", 
+          cvv: "123", 
+          expirationMonth: "12",
+             expirationYear: "2025", 
+          },
+        };
+    
+        axios
+          .post(
+            "https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions",
+            newPlan,
+            { headers }
+          )
+          .then((response) => {
+            alert("Plano alterado com sucesso!");
+            return <Link to="/subscriptions" />;
+          })
+          .catch((error) => alert(error.response.data.message));
+      };
 
     return(
         <Container>
@@ -28,8 +76,8 @@ export default function HomePlan(){
       ))}
     </ButtonsForm>
             <FooterButtons>
-            <ChangeButton>Mudar plano</ChangeButton>
-            <CancelButton>Cancelar plano</CancelButton>
+            <ChangeButton onClick={handleChangePlan}>Mudar plano</ChangeButton>
+            <CancelButton onClick={handleCancelPlan}>Cancelar plano</CancelButton>
             </FooterButtons>
         </Container>
     )

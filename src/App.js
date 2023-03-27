@@ -9,8 +9,9 @@ import { UserContext } from "./contexts/UserContext"
 
 
 
+
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
 
   useEffect(() => {
     const credentials = JSON.parse(localStorage.getItem("credentials"));
