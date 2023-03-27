@@ -1,14 +1,39 @@
 import styled from "styled-components";
-import LogoWhite from "../assets/LogoWhite.svg"
+import { useState, useEffect } from "react";
+import apiSubscriptions from "../services/apiSubscriptions"
 
-export default function Planos(){
-    return(
-        <Planbox>
-            <LogoImage src={LogoWhite}/>
-            <Price>R$ 39,99</Price>
-        </Planbox>
-    )
-}
+
+export default function Plan() {
+    const [planList, setPlanList] = useState([]);
+  
+    useEffect(() => {
+        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
+        const headers = { Authorization: `Bearer ${token}` };
+
+        apiSubscriptions.get("/memberships", { headers })
+        .then(response => {
+          setPlanList(response.data);
+          console.log(response.data);
+        })
+        .catch(error => alert(error.response.data.message));
+    }, []);
+
+
+
+    return (
+        <div>
+        {planList.map(plan => (
+          <Planbox key={plan.id}>
+            <LogoImage src={plan.image} />
+            <Price>R$ {plan.price}</Price>
+            <div>{plan.id}</div>
+            <div>{plan.description}</div>
+            <div>{plan.benefits}</div>
+          </Planbox>
+        ))}
+      </div>
+    );
+  }
 
 const Planbox = styled.div`
     display: flex;

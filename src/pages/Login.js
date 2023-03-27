@@ -17,19 +17,18 @@ export default function Login(){
 
   
     apiAuth.login(formo)
-    .then(res => {
-      if (res.data.membership === null) {
-        localStorage.setItem("credentials", JSON.stringify(formo));
-        navigate("/subscriptions")
-      } else {
-        localStorage.setItem("credentials", JSON.stringify(formo));
-        navigate("/home")
-      }
-    })
-      .catch(err => {
-        alert(err.response.data.message)
-        console.lo(err.response.data.message)
-      })
+  .then(res => {
+    localStorage.setItem("user", JSON.stringify(res.data));
+    if (res.data.membership === null) {
+      navigate("/subscriptions");
+    } else {
+      navigate("/home");
+    }
+  })
+  .catch(err => {
+    alert(err.response.data.message);
+    console.lo(err.response.data.message);
+  })
   }
 
 

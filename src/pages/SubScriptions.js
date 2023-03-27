@@ -2,12 +2,12 @@ import styled from "styled-components";
 import Plan from "../components/Plan";
 
 export default function SubScriptions(){
+    
+
     return(
         <Container>
             <Topoh1>Escolha seu Plano</Topoh1>
-            <Plan/>
-            <Plan/>
-            <Plan/>
+            <Plan  />
         </Container>
     )
 }
