@@ -3,12 +3,13 @@ import Profile from "../assets/Profile.svg"
 import { useContext, useEffect } from "react";
 import { UserContext } from "../contexts/UserContext";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export default function HomePlan(){
     const { user, setUser } = useContext(UserContext);
-
+    const navigate = useNavigate();
+    
 
     useEffect(() => {
         const userData = JSON.parse(localStorage.getItem("user"));
@@ -27,7 +28,7 @@ export default function HomePlan(){
           })
           .then((response) => {
             alert("Plano cancelado com sucesso!");
-            return <Link to="/subscriptions" />;
+            navigate ("/subscriptions");
           })
           .catch((error) => alert(error.response.data.message));
       };
@@ -38,14 +39,12 @@ export default function HomePlan(){
         const headers = { Authorization: `Bearer ${token}` };
     
         const newPlan = {
-          planId: 2, 
-          creditCard: {
-          number: "1234123412341234", 
-          cvv: "123", 
-          expirationMonth: "12",
-             expirationYear: "2025", 
-          },
-        };
+            membershipId: id,
+            cardName: cardName,
+            cardNumber: cardNumber,
+            securityNumber: securityNumber,
+            expirationDate: expirationDate,
+          };
     
         axios
           .post(
@@ -55,7 +54,7 @@ export default function HomePlan(){
           )
           .then((response) => {
             alert("Plano alterado com sucesso!");
-            return <Link to="/subscriptions" />;
+             navigate ("/subscriptions");
           })
           .catch((error) => alert(error.response.data.message));
       };
