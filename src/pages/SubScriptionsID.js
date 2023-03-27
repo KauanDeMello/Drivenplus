@@ -28,7 +28,7 @@ export default function SubscriptionsID() {
         <ArrowImage src={Arrow} />
         <LogoImage src={plan ? plan.image : ""} />
         <PlanoText>{plan ? plan.name : ""}</PlanoText>
-        <DetailsPlan />
+        <DetailsPlan plan={plan}/>
         <form>
           <StyledForm>
             <NameCard>

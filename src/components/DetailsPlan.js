@@ -2,7 +2,7 @@ import styled from "styled-components";
 import MoneyImage from "../assets/Money.svg"
 import BoardImage from "../assets/Board.svg"
 
-export default function DetailsPlan(){
+export default function DetailsPlan({plan}){
     return(
         <Container>
             <Benefits> 
@@ -10,15 +10,16 @@ export default function DetailsPlan(){
              <span>Benefícios:</span>
             </Benefits>
             <BenefitsList>
-                <li>1. Brindes exclusivos</li>
-                <li>2. Materiais bônus de web</li>
+                {plan && plan.perks.map((perk, index) => (
+                    <li key={index}>{perk.title}</li>
+                ))}
             </BenefitsList>
             <Price>
-            <img src={MoneyImage} alt="Money Icon"/>
-            <span>Preço:</span>
-            <PriceList>
-            <li>R$ 39,99 cobrados mensalmente</li>     
-            </PriceList> 
+                <img src={MoneyImage} alt="Money Icon"/>
+                <span>Preço:</span>
+                <PriceList>
+                    <li>{plan ? `R$ ${plan.price} cobrados mensalmente` : ''}</li>     
+                </PriceList> 
             </Price>    
         </Container>
     )
