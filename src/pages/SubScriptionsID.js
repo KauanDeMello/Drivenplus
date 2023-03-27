@@ -4,6 +4,7 @@ import DetailsPlan from "../components/DetailsPlan";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiSubscriptions from "../services/apiSubscriptions";
+import Modal from "../components/Modal";
 
 
 
@@ -11,6 +12,7 @@ import apiSubscriptions from "../services/apiSubscriptions";
 export default function SubscriptionsID() {
     const { id } = useParams();
     const [plan, setPlan] = useState(null);
+    const [showModal, setShowModal] = useState(false);
   
     useEffect(() => {
       const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
@@ -22,6 +24,21 @@ export default function SubscriptionsID() {
         })
         .catch(error => alert(error.response.data.message));
     }, [id]);
+
+
+    const handleShowModal = (event) => {
+        event.preventDefault();
+        setShowModal(true);
+      };
+    
+      const handleCloseModal = () => {
+        setShowModal(false);
+      };
+
+      const handleSubscribe = () => {
+        // Adicione aqui a lógica para fazer a assinatura
+        console.log("Assinando o plano...");
+      };
   
     return (
       <Container>
@@ -29,7 +46,7 @@ export default function SubscriptionsID() {
         <LogoImage src={plan ? plan.image : ""} />
         <PlanoText>{plan ? plan.name : ""}</PlanoText>
         <DetailsPlan plan={plan}/>
-        <form>
+        <form onSubmit={handleShowModal}>
           <StyledForm>
             <NameCard>
               <input 
@@ -58,6 +75,13 @@ export default function SubscriptionsID() {
           </StyledForm> 
           <Button type="submit">ASSINAR</Button>     
         </form>
+        {showModal &&
+        <Modal
+          handleCloseModal={handleCloseModal}
+          plan={plan}
+          handleSubscribe={handleSubscribe}
+        />
+      }
       </Container>
     );
   }

@@ -1,22 +1,26 @@
 import styled from "styled-components";
 import Cancel from "../assets/Cancel.svg"
 
-export default function Modal(){
+export default function Modal({handleCloseModal, plan, handleSubscribe }){
 
-    return(
+    const handleConfirmSubscribe = () => {
+        handleSubscribe();
+        handleCloseModal();
+      };
+
+      return (
         <ContainerModal>
-            <img src={Cancel} alt="Cancel ICON"/>
-             <BoxContainer>
-                <p>Tem certeza que deseja assinar o plano Driven Plus (R$ 39,99)?</p>
-                <Buttons>
-                    <ButtonNO>Não</ButtonNO>
-                    <ButtonYES>Sim</ButtonYES>
-                </Buttons>
-            </BoxContainer>
+          <img src={Cancel} alt="Cancel ICON" onClick={handleCloseModal} />
+          <BoxContainer>
+            <p>Tem certeza que deseja assinar o plano {plan.name} (R$ {plan.price})?</p>
+            <Buttons>
+              <ButtonNO onClick={handleCloseModal}>Não</ButtonNO>
+              <ButtonYES onClick={handleConfirmSubscribe}>Sim</ButtonYES>
+            </Buttons>
+          </BoxContainer>
         </ContainerModal>
-    )
-
-}
+      )
+    }
 
 const ContainerModal = styled.div`
     position: relative;
