@@ -23,8 +23,9 @@ export default function HomePlan(){
 
 
     const handleCancelPlan = () => {
-        const headers = { Authorization: `Bearer ${token}` };
-    
+      const token = localStorage.getItem("token");
+      const headers = { Authorization: `Bearer ${user.token}` };
+
         axios
           .delete("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", {
             headers,
@@ -37,7 +38,9 @@ export default function HomePlan(){
       };
     
       const handleChangePlan = () => {
-        const headers = { Authorization: `Bearer ${token}` };
+
+        const token = localStorage.getItem("token");
+        const headers = { Authorization: `Bearer ${user.token}` };
     
         const newPlan = {
             membershipId: id,
@@ -63,15 +66,15 @@ export default function HomePlan(){
       return(
         <Container>
         <TopContainer>
-            <LogoImage src={(user.membership.image)} alt="Logo Icon"/>
+          {user && user.membership && <LogoImage src={(user.membership.image)} alt="Logo Icon"/>}
             <ProfileImage src={Profile} alt ="Profile Icon"/>
         </TopContainer>
-        <GreetingText>Olá, {JSON.stringify(user.name)}!</GreetingText>
+        {user && user.name && <GreetingText>Olá, {JSON.stringify(user.name)}!</GreetingText>}
 
 
         
         <ButtonsForm>
-      {user.membership.perks.map((perk, index) => (
+      {user && user.membership && user.membership.perks.map((perk, index) => (
         <a href={perk.link} target="_blank" rel="noopener noreferrer" key={index}>
           <button type="button">{perk.title}</button>
         </a>

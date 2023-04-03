@@ -3,21 +3,22 @@ import { useState, useEffect } from "react";
 import apiSubscriptions from "../services/apiSubscriptions"
 import { Link } from "react-router-dom";
 
-
 export default function Plan() {
     const [planList, setPlanList] = useState([]);
-  
+    const [error, setError] = useState(null);
+    const user = JSON.parse(localStorage.getItem("user"));
+
     useEffect(() => {
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
-        const headers = { Authorization: `Bearer ${token}` };
+        const headers = { Authorization: `Bearer ${user.token}` };
 
         apiSubscriptions.get("/memberships", { headers })
-        .then(response => {
-          setPlanList(response.data);
-          console.log(response.data);
-        })
-        .catch(error => alert(error.response.data.message));
-    }, []);
+            .then(response => {
+                setPlanList(response.data);
+            })
+            .catch(error => {
+                setError(error.response.data.message);
+            });
+    }, [user.token]);
 
 
 

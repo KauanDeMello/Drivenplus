@@ -6,81 +6,77 @@ import { useParams, Link, useNavigate, redirect } from "react-router-dom";
 import apiSubscriptions from "../services/apiSubscriptions";
 import Modal from "../components/Modal";
 
-
-
-
 export default function SubscriptionsID() {
-    const navigate = useNavigate();
-    const { id } = useParams();
-    const [plan, setPlan] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const [cardName, setCardName] = useState("");
-    const [cardNumber, setCardNumber] = useState("");
-    const [securityNumber, setSecurityNumber] = useState("");
-    const [expirationDate, setExpirationDate] = useState("");
-  
-    useEffect(() => {
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
-      const headers = { Authorization: `Bearer ${token}` };
-  
-      apiSubscriptions.get(`/memberships/${id}`, { headers })
-        .then(response => {
-          setPlan(response.data);
-        })
-        .catch(error => alert(error.response.data.message));
-    }, [id]);
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [plan, setPlan] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [cardName, setCardName] = useState("");
+  const [cardNumber, setCardNumber] = useState("");
+  const [securityNumber, setSecurityNumber] = useState("");
+  const [expirationDate, setExpirationDate] = useState("");
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const headers = { Authorization: `Bearer ${user.token}` };
 
-    const handleShowModal = (event) => {
-        event.preventDefault();
-        setShowModal(true);
-      };
-    
-      const handleCloseModal = () => {
+    apiSubscriptions
+      .get(`/memberships/${id}`, { headers })
+      .then((response) => {
+        setPlan(response.data);
+      })
+      .catch((error) => alert(error.response.data.message));
+  }, [id]);
+
+  const handleShowModal = (event) => {
+    event.preventDefault();
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleSelectPlan = (planId) => {
+    const selectedPlan = plan.find((plan) => plan.id === planId);
+    setPlan(selectedPlan);
+  };
+
+  const handleSubscribe = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const data = {
+      membershipId: plan.id,
+      cardName: cardName,
+      cardNumber: cardNumber,
+      securityNumber: securityNumber,
+      expirationDate: expirationDate,
+    };
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify(data),
+    };
+
+    fetch("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", options)
+      .then((response) => response.json())
+      .then((data) => {
+        setPlan(data);
         setShowModal(false);
-      };
+        redirectToHome();
+      })
+      .catch((error) => {
+        console.error("Error subscribing to plan:", error);
+        alert("Error subscribing to plan. Please try again later.");
+      });
+  };
 
-      const handleSelectPlan = (planId) => {
-        const selectedPlan = plan.find((plan) => plan.id === planId);
-        setPlan(selectedPlan);
-      };
-
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTM3OCwiaWF0IjoxNjc5ODk1OTQ4fQ.0w5DEgiVqtkVKyBvde8EuCHyiMXHP-SdPVXTxUcQ4Ns";
-
-      const handleSubscribe = () => {
-        const data = {
-          membershipId: plan.id,
-          cardName: cardName,
-          cardNumber: cardNumber,
-          securityNumber: securityNumber,
-          expirationDate: expirationDate,
-        };
-        
-        const options = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify(data),
-        };
-    
-        fetch("https://mock-api.driven.com.br/api/v4/driven-plus/subscriptions", options)
-          .then((response) => response.json())
-          .then((data) => {
-            setPlan(data);
-            setShowModal(false);
-            redirectToHome();
-          })
-          .catch((error) => {
-            console.error("Error subscribing to plan:", error);
-            alert("Error subscribing to plan. Please try again later.");
-          });
-          
-          const redirectToHome = () => {
-            navigate("/home");
-          };
-      };
+  const redirectToHome = () => {
+    navigate("/home");
+  };
   
     return (
       <Container>

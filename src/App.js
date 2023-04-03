@@ -14,9 +14,9 @@ export default function App() {
   const [user, setUser] = useState();
 
   useEffect(() => {
-    const credentials = JSON.parse(localStorage.getItem("credentials"));
-    if (credentials) {
-      setUser(credentials);
+    const token = JSON.parse(localStorage.getItem("token"));
+    if (token) {
+      setUser(token);
     }
   }, []);
 
